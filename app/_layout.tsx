@@ -1,37 +1,44 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { Stack, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // null = carregando
+  const router = useRouter();
+
+  
+  useEffect(() => {
+    // Aqui você normalmente verificaria o estado de autenticação,
+    // por exemplo, chamando uma API ou verificando o token no AsyncStorage.
+    const checkAuthStatus = async () => {
+      // Simulando um atraso para checar o estado de autenticação
+      setTimeout(() => {
+        const userIsLoggedIn = true; // Altere para true para simular um usuário autenticado
+        setIsAuthenticated(userIsLoggedIn);
+      }, 1000); // 1 segundo de atraso (simulando uma chamada de API)
+    };
+
+    checkAuthStatus();
+  }, []);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    
+    if (isAuthenticated === false) {
+      router.replace("/auth/login"); 
+    } else if (isAuthenticated === true) {
+      router.replace("/main/dashboard"); 
     }
-  }, [loaded]);
+  }, [isAuthenticated]);
 
-  if (!loaded) {
-    return null;
+  
+  if (isAuthenticated === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+  
+  return <Stack  screenOptions={{headerShown: false}}/>;
 }
