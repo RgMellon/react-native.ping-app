@@ -15,15 +15,22 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.ping.app",
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "03043c96-4a95-40b6-ba9f-8d4062f72f42"
+      }
     }
   }
 }

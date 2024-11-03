@@ -2,21 +2,23 @@ import axios, { isAxiosError } from "axios";
 import api from "../api";
 import { BusinessError } from "../errors/business.error";
 import { InternalError } from "../errors/internal.error";
+import { AddNewNotificationDto } from "../dtos/add.notification.token.dto";
 
-type Coordinates = {
-  latitude: number;
-  longitude: number;
-};
-
-export async function getNearbySellers({ latitude, longitude }: Coordinates) {
+export async function addNewNotificationService({
+  id,
+  token,
+}: AddNewNotificationDto) {
   try {
-    const response = await api.get("/notification", {
-      params: {
-        latitude,
-        longitude,
-      },
+    if (!token) {
+      throw new InternalError("Token not found in AddNewNotification");
+    }
+
+    const response = await api.post("/users/token/notification", {
+      id,
+      token,
     });
-    
+
+    console.log(response.data);
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {

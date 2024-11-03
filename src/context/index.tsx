@@ -1,12 +1,15 @@
 import React from "react";
-import { AuthProvider } from "../hooks/auth";
+import { AuthProvider } from "./auth";
+import { ModalPushProvider } from "./modal-push";
 
 type AppProviderProps = {
   children: React.ReactNode;
 };
 
 function AppProvider({ children }: AppProviderProps) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return <ModalPushProvider>
+          <AuthProvider>{children}</AuthProvider>
+      </ModalPushProvider>
 }
 
 export { AppProvider };

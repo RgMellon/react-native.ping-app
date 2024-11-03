@@ -2,7 +2,7 @@ import axios, { isAxiosError } from "axios";
 import api from "../api";
 import { BusinessError } from "../errors/business.error";
 import { InternalError } from "../errors/internal.error";
-import { CreateUserRequestDto } from "../dtos/location/create.user.request.dto";
+import { CreateUserRequestDto } from "../dtos/create.user.request.dto";
 
 export async function createUser({
   email,

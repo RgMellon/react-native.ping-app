@@ -2,18 +2,27 @@ import axios from "axios";
 import api from "../api";
 import { BusinessError } from "../errors/business.error";
 import { InternalError } from "../errors/internal.error";
-import { LoginUserRequestDto } from "../dtos/login.user.request.dto";
+import { CreateNewOrderDto } from "../dtos/order/create.new.order";
 
-export async function loginUserService({
-  email,
-  password,
-}: LoginUserRequestDto) {
+export async function createNewOrder({
+  location,
+  userId,
+  amount,
+  description,
+}: CreateNewOrderDto) {
+  if (!userId) return;
+  if (!location.latitude || !location.longitude) {
+    throw new BusinessError("Location coordinates are required");
+  }
+
   try {
-    const response = await api.post("/users/session", {
-      email,
-      password,
+    const response = await api.post("/order", {
+      userId: userId,
+      location: location,
+      status: "PENDING",
+      amount,
+      description,
     });
-
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {

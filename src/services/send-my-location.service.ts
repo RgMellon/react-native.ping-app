@@ -1,22 +1,18 @@
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import api from "../api";
 import { BusinessError } from "../errors/business.error";
 import { InternalError } from "../errors/internal.error";
+import { SendMyLocationDto } from "../dtos/location/send.location.request.dto";
 
-type Coordinates = {
-  latitude: number;
-  longitude: number;
-};
+export async function sendMyLocation({ location, userId }: SendMyLocationDto) {
+  if (!userId) return;
 
-export async function getNearbySellers({ latitude, longitude }: Coordinates) {
+  
   try {
-    const response = await api.get("/notification", {
-      params: {
-        latitude,
-        longitude,
-      },
+    const response = await api.post("/notification", {
+      userId: userId,
+      location: location,
     });
-    
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
