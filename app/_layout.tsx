@@ -9,7 +9,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 
 function MainApp() {
   const { loading } = useAuth();
-  const { expoPushToken, notification } = usePushNotifications();
+  usePushNotifications();
 
 
   if (loading) {

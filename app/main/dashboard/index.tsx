@@ -27,10 +27,12 @@ export default function DashboardScreen() {
         alert('Preencha todos os campos');
         return;
       }
+
       await createOrder({
         amount: parseFloat(price),
         description: description,
       });
+      
     } catch (error) {
       Toast.show('Falha ao criar ordem, tente novamente mais tarde', {
         duration: Toast.durations.LONG,
@@ -40,11 +42,10 @@ export default function DashboardScreen() {
 
   return (
     <View className="flex-1">
-      {/* TODO usar o id como key e nao o token no notification */}
        {location && 
             <PingMap latitude={location.coords.latitude} longitude={location.coords.longitude}>
                 {!!nearbySellers &&  nearbySellers.map(seller => 
-                  seller.key !== data.access_token && 
+                  seller.key !== data.user.id && 
                     <Marker key={seller.key}
                       onPress={() => {alert("oi")}}
                       coordinate={{

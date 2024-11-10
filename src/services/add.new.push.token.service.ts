@@ -8,6 +8,7 @@ export async function addNewNotificationService({
   id,
   token,
 }: AddNewNotificationDto) {
+  
   try {
     if (!token) {
       throw new InternalError("Token not found in AddNewNotification");

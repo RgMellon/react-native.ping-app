@@ -8,9 +8,6 @@ import {
   useState,
 } from "react";
 
-import { LoginUserRequestDto } from "../dtos/login.user.request.dto";
-import api from "../api";
-import { loginUserService } from "../services/login.user.service";
 import { useRouter } from "expo-router";
 
 interface ModalPushContextData {
@@ -28,7 +25,8 @@ export function useModalPush(): ModalPushContextData {
   const context = useContext(ModalPushContext);
   if (!context) {
     throw Error("useModalPush must be used within an ModalPushProvider");
-  }
+  } 
+  
   return context;
 }
 

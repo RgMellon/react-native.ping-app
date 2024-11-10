@@ -18,6 +18,7 @@ export function useDashboardViewModel() {
 
   async function getMyLocationToSearchNearbySellers() {
     const currentPosition = await requestLocationPermission();
+
     if (currentPosition) {
       setLocation(currentPosition);
       loadData(
@@ -30,7 +31,7 @@ export function useDashboardViewModel() {
           latitude: currentPosition.coords.latitude,
           longitude: currentPosition.coords.longitude,
         },
-        userId: data.user.id,
+        userId: data.user.token_notification || "",
       });
     }
   }
@@ -42,7 +43,7 @@ export function useDashboardViewModel() {
     try {
       setLoadingOrder(true);
       await createNewOrder({
-        userId: data?.access_token,
+        userId: data?.user.id,
         location: {
           latitude: location?.coords.latitude ?? 0,
           longitude: location?.coords.longitude ?? 0,
