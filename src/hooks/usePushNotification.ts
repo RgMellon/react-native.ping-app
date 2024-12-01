@@ -62,13 +62,12 @@ async function registerForPushNotificationsAsync() {
 export function usePushNotifications() {
   const { data } = useAuth();
 
-  const { setShow } = useModalPush();
+  const { setShow, setModalInfo } = useModalPush();
 
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [notification, setNotification] =
-    useState<Notifications.Notification | null>(null);
-  const notificationListener = useRef<Notifications.Subscription | null>(null);
-  const responseListener = useRef<Notifications.Subscription | null>(null);
+  const notificationListener = useRef<Notifications.EventSubscription | null>(
+    null
+  );
+  const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -76,18 +75,23 @@ export function usePushNotifications() {
         addNewNotificationService({
           id: data.user.id,
           token: token!,
-        })
-          .then((_) => {
-            setExpoPushToken(token ?? null);
-          })
-          .catch((err) => console.log("err", err));
+        }).catch((err) => console.log("err", err));
       })
-      .catch((error) => setExpoPushToken(error));
+      .catch((error) => console.log("error on notification", error));
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
+        //TODO pegar aqui os dados enviado pelo service, salvar pra apresentar no modal
+        console.log(
+          notification.request.content.data,
+          " -notification------------"
+        );
         setShow(true);
-        setNotification(notification);
+        setModalInfo({
+          name: notification.request.content.data.description,
+          price: notification.request.content.data.price,
+        });
+        // setNotification(notification);
       });
 
     responseListener.current =
@@ -104,9 +108,4 @@ export function usePushNotifications() {
         Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-
-  return {
-    expoPushToken,
-    notification,
-  };
 }

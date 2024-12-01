@@ -8,21 +8,27 @@ import {
   useState,
 } from "react";
 
-import { useRouter } from "expo-router";
-
 interface ModalPushContextData {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>
+  setModalInfo: React.Dispatch<React.SetStateAction<ModalInfoProps>>
+  modalInfo: ModalInfoProps;
 }
 
 type Props = {
   children: React.ReactNode;
 };
 
+type ModalInfoProps = {
+  price: string;
+  name: string
+}
+
 const ModalPushContext = createContext<ModalPushContextData>({} as ModalPushContextData);
 
 export function useModalPush(): ModalPushContextData {
   const context = useContext(ModalPushContext);
+
   if (!context) {
     throw Error("useModalPush must be used within an ModalPushProvider");
   } 
@@ -31,12 +37,12 @@ export function useModalPush(): ModalPushContextData {
 }
 
 export function ModalPushProvider({ children }: Props) {
-  const router = useRouter();
-
+  
   const [show, setShow] = useState(false);
+  const [modalInfo, setModalInfo] = useState({} as ModalInfoProps)
 
   return (
-    <ModalPushContext.Provider value={{ setShow, show }}>
+    <ModalPushContext.Provider value={{ setShow, show, modalInfo, setModalInfo }}>
       {children}
     </ModalPushContext.Provider>
   );

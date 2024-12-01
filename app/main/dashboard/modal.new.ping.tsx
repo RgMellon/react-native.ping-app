@@ -14,7 +14,7 @@ type Props = {
 
 
 export const ModalNewPing = ({ isVisible, onClose, handleSendAction, lat, long}: Props) => {
-  const {setShow} = useModalPush()
+  const {setShow, modalInfo} = useModalPush()
 
   return (
     <Modal statusBarTranslucent={false} transparent={true} visible={isVisible} animationType="slide">
@@ -32,14 +32,14 @@ export const ModalNewPing = ({ isVisible, onClose, handleSendAction, lat, long}:
             <View className='mt-4 justify-center items-center'>
               <Text className={"font-bold text-2xl"}>Nova Solicitação</Text>
 
-              <Text className={"font-medium text-xl mt-4"}>Garrafa de agua</Text>
+              <Text className={"font-medium text-xl mt-4"}>{modalInfo.name}</Text>
 
               <View className='flex-row items-center justify-center mt-6'>
                 <View className='rounded-full p-[8px] bg-ping-gray justify-center items-center'>
                     <Text className='text-sm font-bold'>R$</Text>
                 </View>  
                 
-                <Text className={"text-lg ml-[8px]"}>15,00</Text>
+                <Text className={"text-lg ml-[8px]"}>{`R$ ${Number(modalInfo.price).toFixed(2).toLocaleString().replace('.', ',')}`}</Text>
               </View>
               
             </View>
