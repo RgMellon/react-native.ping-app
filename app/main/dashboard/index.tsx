@@ -44,8 +44,8 @@ export default function DashboardScreen() {
     <View className="flex-1">
        {location && 
             <PingMap latitude={location.coords.latitude} longitude={location.coords.longitude}>
-                {!!nearbySellers &&  nearbySellers.map(seller => 
-                  seller.key !== data.user.id && 
+                {!!nearbySellers &&  nearbySellers.map(seller =>  {
+                  return(seller.key !== data.user.token_notification && 
                     <Marker key={seller.key}
                       onPress={() => {alert("oi")}}
                       coordinate={{
@@ -56,7 +56,9 @@ export default function DashboardScreen() {
                         <Text className='font-bold'>P</Text>
                       </View>
                     </Marker>
-                  )}
+                  )})
+                }
+                  
               </PingMap>
         }
         
