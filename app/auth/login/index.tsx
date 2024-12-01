@@ -23,6 +23,7 @@ export default function LoginScreen() {
       await signIn(credentials)
 
     } catch (err) {
+      
       Toast.show('Falha ao realizar login, tente novamente mais tarde', {
         duration: Toast.durations.LONG,
       });
