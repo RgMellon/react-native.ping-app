@@ -8,7 +8,6 @@ export async function addNewNotificationService({
   id,
   token,
 }: AddNewNotificationDto) {
-  
   try {
     if (!token) {
       throw new InternalError("Token not found in AddNewNotification");
@@ -19,7 +18,6 @@ export async function addNewNotificationService({
       token,
     });
 
-    console.log(response.data);
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {

@@ -7,13 +7,12 @@ import { SendMyLocationDto } from "../dtos/location/send.location.request.dto";
 export async function sendMyLocation({ location, userId }: SendMyLocationDto) {
   if (!userId) return;
 
-  console.log("userId: " + userId);
-
   try {
     const response = await api.post("/notification", {
       userId: userId,
       location: location,
     });
+
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {

@@ -5,7 +5,7 @@ import { Modal, KeyboardAvoidingView, ScrollView, Platform, TouchableOpacity, Vi
 
 
 type Props = {
-    isVisible: boolean;
+    isVisible: boolean | null;
     onClose: () => void;
     lat?: number;
     long?: number;
@@ -13,11 +13,11 @@ type Props = {
 };
 
 
-export const ModalNewPing = ({ isVisible, onClose, handleSendAction, lat, long}: Props) => {
+export const ModalNewPing = ({ isVisible, onClose}: Props) => {
   const {setShow, modalInfo} = useModalPush()
 
   return (
-    <Modal statusBarTranslucent={false} transparent={true} visible={isVisible} animationType="slide">
+    <Modal statusBarTranslucent={false} transparent={true} visible={isVisible!!} animationType="slide">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -47,18 +47,16 @@ export const ModalNewPing = ({ isVisible, onClose, handleSendAction, lat, long}:
 
            <View className='flex-row justify-between'>
               <TouchableOpacity 
-                    delayLongPress={1000}
                     activeOpacity={0.4} 
                     className="bg-ping-gray self-end rounded-2xl mt-10 h-12 w-[40%] justify-center items-center" 
-                    onLongPress={() => { setShow(false)}}>
+                    onPress={() => { setShow(false)}}>
                       <Text className='color-black font-bold'>Recusar</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    delayLongPress={1000}
                     activeOpacity={0.4} 
                     className="bg-ping-yellow self-end rounded-2xl mt-10 h-12 w-[40%] justify-center items-center" 
-                    onLongPress={() => { setShow(false)}}>
+                    onPress={() => { setShow(false)}}>
                       <Text className='color-black font-bold'>Aceitar</Text>
                 </TouchableOpacity>
            </View>

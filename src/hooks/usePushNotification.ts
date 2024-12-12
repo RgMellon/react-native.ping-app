@@ -1,12 +1,13 @@
 // hooks/usePushNotifications.ts
 import { useState, useEffect, useRef } from "react";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import { useModalPush } from "../context/modal-push";
 import { useAuth } from "../context/auth";
 import { addNewNotificationService } from "../services/add.new.push.token.service";
+import { useNotificationToken } from "../context/token-notification";
 
 function handleRegistrationError(errorMessage: string) {
   console.error("Error registering for push notifications:", errorMessage);
@@ -61,6 +62,7 @@ async function registerForPushNotificationsAsync() {
 
 export function usePushNotifications() {
   const { data } = useAuth();
+  const { setToken } = useNotificationToken();
 
   const { setShow, setModalInfo } = useModalPush();
 
@@ -72,6 +74,7 @@ export function usePushNotifications() {
   useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) => {
+        setToken(token!);
         addNewNotificationService({
           id: data.user.id,
           token: token!,
@@ -81,23 +84,15 @@ export function usePushNotifications() {
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        //TODO pegar aqui os dados enviado pelo service, salvar pra apresentar no modal
-        console.log(
-          notification.request.content.data,
-          " -notification------------"
-        );
         setShow(true);
         setModalInfo({
           name: notification.request.content.data.description,
           price: notification.request.content.data.price,
         });
-        // setNotification(notification);
       });
 
     responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response, "oi");
-      });
+      Notifications.addNotificationResponseReceivedListener((response) => {});
 
     return () => {
       notificationListener.current &&

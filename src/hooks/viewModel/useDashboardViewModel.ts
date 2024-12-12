@@ -6,6 +6,7 @@ import { sendMyLocation } from "@/src/services/send-my-location.service";
 import { useAuth } from "../../context/auth";
 import { createNewOrder } from "@/src/services/create.new.order.service";
 import { CreateNewOrderDto } from "@/src/dtos/order/create.new.order";
+import { useNotificationToken } from "@/src/context/token-notification";
 
 export function useDashboardViewModel() {
   const [loadingOrder, setLoadingOrder] = useState(false);
@@ -13,6 +14,7 @@ export function useDashboardViewModel() {
   const [location, setLocation] = useState<LocationObject | null>(null);
   const { loadData, nearbySellers } = useNearbySellers();
   const { data } = useAuth();
+  const { token } = useNotificationToken();
 
   const { requestLocationPermission } = useMapLocation();
 
@@ -21,7 +23,7 @@ export function useDashboardViewModel() {
 
     if (currentPosition) {
       setLocation(currentPosition);
-      loadData(
+      await loadData(
         currentPosition.coords.latitude,
         currentPosition.coords.longitude
       );
@@ -31,7 +33,7 @@ export function useDashboardViewModel() {
           latitude: currentPosition.coords.latitude,
           longitude: currentPosition.coords.longitude,
         },
-        userId: data.user.token_notification || "",
+        userId: token,
       });
     }
   }
@@ -42,6 +44,7 @@ export function useDashboardViewModel() {
   }: Omit<CreateNewOrderDto, "userId" | "location">) {
     try {
       setLoadingOrder(true);
+
       await createNewOrder({
         userId: data?.user.id,
         location: {
@@ -51,7 +54,7 @@ export function useDashboardViewModel() {
         amount,
         description,
       });
-      alert("Order created successfully!");
+
       setLoadingOrder(false);
     } catch (error) {
       console.error("Error creating order:", error);

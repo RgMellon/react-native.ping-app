@@ -1,8 +1,7 @@
 import { AppProvider } from '@/src/context';
 import { useAuth } from '@/src/context/auth';
 import { usePushNotifications } from '@/src/hooks/usePushNotification';
-import { Stack, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Stack } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 

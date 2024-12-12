@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LocationResponseDto } from "../dtos/location/location.response.dto";
 import { getNearbySellers } from "../services/get-nearby-sellers";
 import { BusinessError } from "../errors/business.error";
 
 export const useNearbySellers = () => {
   const [nearbySellers, setNearbySellers] = useState<LocationResponseDto[]>([]);
-  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const loadData = async (latitude: number, longitude: number) => {
@@ -16,6 +15,7 @@ export const useNearbySellers = () => {
       });
       setNearbySellers(data);
     } catch (e) {
+      setError("Error ");
       throw new BusinessError("Product not found");
     }
   };

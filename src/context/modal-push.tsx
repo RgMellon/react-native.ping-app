@@ -40,6 +40,7 @@ export function ModalPushProvider({ children }: Props) {
   
   const [show, setShow] = useState(false);
   const [modalInfo, setModalInfo] = useState({} as ModalInfoProps)
+  
 
   return (
     <ModalPushContext.Provider value={{ setShow, show, modalInfo, setModalInfo }}>
