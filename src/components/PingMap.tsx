@@ -3,7 +3,7 @@ import MapView from "react-native-maps"
 type Params = {
     latitude: number;
     longitude: number;
-    children: React.ReactNode// TODO: Define the type of nearbySellers
+    children: React.ReactNode
 }
 export function PingMap({latitude, longitude, children}: Params) {
     return <MapView 

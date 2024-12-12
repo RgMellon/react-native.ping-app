@@ -1,4 +1,3 @@
-import { PingMap } from '@/src/components/PingMap';
 import { useModalPush } from '@/src/context/modal-push';
 import React from 'react';
 import { Modal, KeyboardAvoidingView, ScrollView, Platform, TouchableOpacity, View, Text } from 'react-native';

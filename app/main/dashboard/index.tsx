@@ -5,8 +5,6 @@ import { useState } from 'react';
 import { useDashboardViewModel } from '@/src/hooks/viewModel/useDashboardViewModel';
 
 import { ModalComponent } from './modal.component';
-import { RequestButton } from './request.button';
-import { useAuth } from '@/src/context/auth';
 import { useModalPush } from '@/src/context/modal-push';
 import { ModalNewPing } from './modal.new.ping';
 import { PingMap } from '@/src/components/PingMap';
@@ -16,9 +14,6 @@ import { ModalUserPending } from './modal.user.pending';
 
 export default function DashboardScreen() {
   const {show} = useModalPush()
-
-  
-  // const {data} = useAuth();
   const {token} = useNotificationToken();
   const {nearbySellers, location, createOrder} = useDashboardViewModel()
 
@@ -27,11 +22,6 @@ export default function DashboardScreen() {
   const openModal = (modal: 'newPing' | 'userPending' | 'createOrder') => setActiveModal(modal);
   const closeModal = () => setActiveModal(null);
 
- 
-  // const openModal = () => setModalVisible(true);
-  // const closeModal = () => setModalVisible(false);
-  // const [modalVisible, setModalVisible] = useState(false);
-  // const [modalWaitSellerConfirmation, setModalWaitSellerConfirmation] = useState(false);
   
   async function handleConfirm(description?: string, price?: string) {
     try {
@@ -46,8 +36,7 @@ export default function DashboardScreen() {
       });
 
       closeModal()
-      // setModalVisible(false)
-      // setModalWaitSellerConfirmation(true)
+      openModal("userPending")
       
     } catch (error) {
       Toast.show('Falha ao criar ordem, tente novamente mais tarde', {

@@ -76,7 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (!data?.access_token) {
         router.replace("/auth/login"); 
       } else {
-        router.replace("/main/dashboard");
+        router.replace("/main/pending");
       }
     }
   }, [loading, data?.access_token, router]);
